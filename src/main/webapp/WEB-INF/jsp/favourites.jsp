@@ -67,6 +67,10 @@
             background-color: #a0195e;
             color: white;
         }
+        .saved-date {
+            font-size: 11px;
+            color: #6c757d;
+        }
         .empty-state {
             text-align: center;
             padding: 80px 0;
@@ -92,6 +96,10 @@
                     <a href="/favourites"
                        class="btn btn-outline-light btn-sm">
                         ❤️ Favourites
+                    </a>
+                    <a href="/top-sellers"
+                       class="btn btn-outline-light btn-sm">
+                        ⭐ Top Sellers
                     </a>
                 <% } %>
                 <a href="/inbox"
@@ -151,49 +159,54 @@
                     saved car(s)
                 </p>
                 <div class="row">
-                    <c:forEach var="car"
+                    <c:forEach var="fav"
                                items="${favouriteList}">
                         <div class="col-md-4">
                             <div class="card car-card">
                                 <c:choose>
-                                    <c:when test="${not empty car.imagePath
-                                            and car.imagePath != 'default-car.png'}">
-                                        <img src="/uploads/cars/${car.imagePath}"
+                                    <c:when test="${not empty fav.carImage
+                                            and fav.carImage != 'default-car.png'}">
+                                        <img src="/uploads/cars/${fav.carImage}"
                                              class="car-img-real"
-                                             alt="${car.brand} ${car.model}"
+                                             alt="${fav.carBrand} ${fav.carModel}"
                                              onerror="this.style.display='none'">
                                     </c:when>
                                     <c:otherwise>
-                                        <div class="car-img-placeholder">🚗</div>
+                                        <div class="car-img-placeholder">
+                                            🚗
+                                        </div>
                                     </c:otherwise>
                                 </c:choose>
                                 <div class="card-body p-3">
                                     <h5 class="fw-bold mb-1">
-                                        <c:out value="${car.brand} ${car.model}"/>
+                                        <c:out value="${fav.displayName}"/>
                                     </h5>
                                     <p class="text-muted mb-2"
                                        style="font-size:13px;">
-                                        📍 <c:out value="${car.location}"/>
+                                        📍
+                                        <c:out value="${fav.carLocation}"/>
                                     </p>
                                     <div class="mb-2">
                                         <span class="spec-badge">
-                                            <c:out value="${car.year}"/>
+                                            <c:out value="${fav.carBrand}"/>
                                         </span>
                                         <span class="spec-badge">
-                                            <c:out value="${car.fuelType}"/>
-                                        </span>
-                                        <span class="spec-badge">
-                                            <c:out value="${car.mileage}"/> km
+                                            <c:out value="${fav.carModel}"/>
                                         </span>
                                     </div>
-                                    <div class="d-flex justify-content-between
-                                                align-items-center mb-3">
+                                    <div class="d-flex
+                                                justify-content-between
+                                                align-items-center mb-2">
                                         <span class="price-badge">
-                                            LKR <c:out value="${car.price}"/>
+                                            <c:out value="${fav.formattedPrice}"/>
                                         </span>
                                     </div>
+                                    <p class="saved-date mb-3">
+                                        💾 Saved on:
+                                        <c:out value="${fav.savedDate}"/>
+                                    </p>
                                     <div class="d-flex gap-2">
-                                        <a href="/carDetail?id=${car.id}"
+                                        <a href="/carDetail?id=${fav.carId}"
                                            class="btn btn-view btn-sm flex-grow-1">
                                             View Details
                                         </a>
@@ -201,7 +214,7 @@
                                               method="post">
                                             <input type="hidden"
                                                    name="carId"
-                                                   value="${car.id}">
+                                                   value="${fav.carId}">
                                             <button type="submit"
                                                     class="btn btn-outline-danger btn-sm"
                                                     onclick="return confirm(
