@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @Controller
 public class AdminServlet {
 
@@ -20,6 +21,7 @@ public class AdminServlet {
     private CarDAO carDAO = new CarDAO();
     private InquiryDAO inquiryDAO = new InquiryDAO();
     private ReviewDAO reviewDAO = new ReviewDAO();
+
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
@@ -42,6 +44,7 @@ public class AdminServlet {
         return "dashboard";
     }
 
+
     @GetMapping("/manage-users")
     public String manageUsers(
             @RequestParam(required = false,
@@ -57,13 +60,16 @@ public class AdminServlet {
                 && status.isEmpty()) {
             users = adminDAO.getAllUsers();
         } else {
-            users = adminDAO.searchUsers(search, role, status);
+            users = adminDAO.searchUsers(
+                    search, role, status);
         }
 
         model.addAttribute("userList", users);
-        model.addAttribute("totalUsers", adminDAO.countUsers());
+        model.addAttribute("totalUsers",
+                adminDAO.countUsers());
         return "manage-users";
     }
+
 
     @GetMapping("/manage-listings")
     public String manageListings(
@@ -122,12 +128,21 @@ public class AdminServlet {
         return "redirect:/manage-users";
     }
 
+
     @PostMapping("/activateUser")
     public String activateUser(
             @RequestParam int userId) {
         adminDAO.activateUser(userId);
         return "redirect:/manage-users";
     }
+
+    @PostMapping("/removeListing")
+    public String removeListing(
+            @RequestParam int carId) {
+        carDAO.removeListing(carId);
+        return "redirect:/manage-listings";
+    }
+
 
     @PostMapping("/deleteUser")
     public String deleteUser(
