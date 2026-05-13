@@ -161,21 +161,6 @@ public class ReviewDAO {
         return sellers;
     }
 
-    // UPDATE
-    public boolean moderateReview(int reviewId, String status) {
-        String sql = "UPDATE reviews SET status = ? WHERE id = ?";
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, status);
-            ps.setInt(2, reviewId);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.out.println("Moderate error: "
-                    + e.getMessage());
-            return false;
-        }
-    }
-
     // DELETE
     public boolean deleteReview(int reviewId) {
         String sql = "DELETE FROM reviews WHERE id = ?";
