@@ -18,18 +18,6 @@ public class Admin extends User {
         this.adminLevel = "SUPER";
     }
 
-
-    public String getAdminLevel() { return adminLevel; }
-    public void setAdminLevel(String adminLevel) {
-        this.adminLevel = adminLevel;
-    }
-
-
-    public boolean canDeleteUser() { return true; }
-    public boolean canModerateReviews() { return true; }
-    public boolean canRemoveListings() { return true; }
-
-
     @Override
     public String getRole() { return "ADMIN"; }
 
